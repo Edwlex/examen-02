@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PharmaCorp | Sistema de Gestión</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- PANTALLA DE LOGIN/REGISTRO -->
+  <div id="auth-container" class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <i class="fas fa-pills fa-2x"></i>
+        <h1>PharmaCorp</h1>
+        <p>Sistema de Gestión Farmacéutica</p>
+      </div>
+      
+      <!-- Login -->
+      <form id="login-form" class="auth-form">
+        <h2>Iniciar Sesión</h2>
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="login-email" placeholder="Correo corporativo" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="login-password" placeholder="Contraseña" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Ingresar al Sistema</button>
+        <p class="switch-form">¿Sin cuenta? <a href="#" id="show-register">Crear cuenta</a></p>
+      </form>
+
+      <!-- Register -->
+      <form id="register-form" class="auth-form hidden">
+        <h2>Registro de Empleado</h2>
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="reg-nombre" placeholder="Nombre completo" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="reg-email" placeholder="Correo corporativo" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="reg-password" placeholder="Contraseña (mín. 6)" required minlength="6">
+        </div>
+        <div class="input-group">
+          <i class="fas fa-user-tag"></i>
+          <select id="reg-rol" required>
+            <option value="usuario">Usuario (Solo lectura)</option>
+            <option value="moderador">Moderador (Editar)</option>
+            <option value="administrador">Administrador (Control Total)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+        <p class="switch-form">¿Ya tiene cuenta? <a href="#" id="show-login">Iniciar sesión</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PRINCIPAL -->
+  <div id="dashboard-container" class="dashboard-wrapper hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <i class="fas fa-pills"></i> PharmaCorp
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-link active" data-section="catalogo"><i class="fas fa-box-open"></i> Catálogo General</a>
+        <a href="#" class="nav-link admin-only mod-only hidden" data-section="gestionar"><i class="fas fa-edit"></i> Gestionar Productos</a>
+        <a href="#" class="nav-link admin-only hidden" data-section="categorias"><i class="fas fa-tags"></i> Gestionar Categorías</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <i class="fas fa-user-circle fa-2x"></i>
+          <div>
+            <p id="user-name" class="user-name">Usuario</p>
+            <p id="user-rol" class="user-rol">Rol</p>
+          </div>
+        </div>
+        <button id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="topbar">
+        <h2 id="page-title">Catálogo General</h2>
+      </header>
+
+      <div class="content-area">
+        <!-- Sección Catálogo (Todos) -->
+        <section id="sec-catalogo" class="section active">
+          <div class="card">
+            <h3>Inventario de Productos</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-catalogo"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Sección Gestionar (Admin/Mod) -->
+        <section id="sec-gestionar" class="section hidden">
+          <div class="card">
+            <h3 id="form-title">Agregar Nuevo Producto</h3>
+            <form id="producto-form" class="grid-form">
+              <input type="hidden" id="prod-id">
+              <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="prod-nombre" required>
+              </div>
+              <div class="form-group">
+                <label>Precio (S/.)</label>
+                <input type="number" id="prod-precio" step="0.01" min="0" required>
+              </div>
+              <div class="form-group">
+                <label>Stock</label>
+                <input type="number" id="prod-stock" min="0" required>
+              </div>
+              <div class="form-group">
+                <label>Categoría</label>
+                <select id="prod-categoria" required></select>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="btn-submit-prod">Guardar</button>
+                <button type="button" class="btn btn-secondary hidden" id="btn-cancel-edit">Cancelar</button>
+              </div>
+            </form>
+          </div>
+          <div class="card">
+            <h3>Lista de Productos</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-gestionar"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Sección Categorías (Solo Admin) -->
+        <section id="sec-categorias" class="section hidden">
+          <div class="card">
+            <h3>Agregar Categoría</h3>
+            <form id="categoria-form" class="inline-form">
+              <input type="text" id="cat-nombre" placeholder="Nombre de la categoría" required>
+              <button type="submit" class="btn btn-primary">Agregar</button>
+            </form>
+          </div>
+          <div class="card">
+            <h3>Categorías Registradas</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-categorias"></tbody>
+            </table>
+          </div>
+        </section>
+
+      </div> <!-- Fin content-area -->
+    </main> <!-- Fin main-content -->
+  </div> <!-- Fin dashboard-container -->
+
+  <!-- ⚠️ ESTA LÍNEA ES CRUCIAL: Carga el JavaScript al final -->
+  <script src="app.js"></script>
+</body>
+</html>
