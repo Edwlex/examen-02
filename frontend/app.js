@@ -1,4 +1,4 @@
-const API = 'https://backend-farmacia-d5pj.onrender.com';
+const API = 'https://backend-farmacia-d5pj.onrender.com/api';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("✅ App.js cargado correctamente");
